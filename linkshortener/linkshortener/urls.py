@@ -16,15 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from rest_framework.routers import DefaultRouter
-from app.views import UrlListViewSets, UrlShorter
+from app.views import UrlListViewSet, UrlShortener, UrlExport, ShortUrlView
 
 
 router = DefaultRouter()
-router.register('', UrlListViewSets)
+router.register('list', UrlListViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^shorter/(?P<origin_uri>.+)$', UrlShorter.as_view())
+    re_path(r'^shortener/(?P<origin_uri>.+)$', UrlShortener.as_view()),
+    path('export/', UrlExport.as_view()),
+    re_path(r'^(?P<hash>.+)$', ShortUrlView.as_view()),
 ]
 
 urlpatterns += router.urls

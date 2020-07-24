@@ -1,18 +1,20 @@
+import csv
+from django.http import HttpResponse, HttpResponseRedirect
+
 from rest_framework import viewsets, mixins
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import HttpResponse
 
-from .models import Url
-from .serializers import UrlSerializer
+from app.models import Url
+from app.serializers import UrlSerializer
 
 
-class UrlListViewSets(mixins.ListModelMixin, viewsets.GenericViewSet):
+class UrlListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = UrlSerializer
     queryset = Url.objects.all()
 
 
-class UrlShorter(APIView):
+class UrlShortener(APIView):
     def post(self, request, origin_uri):
         try:
             url = Url.objects.get(url=origin_uri)
@@ -22,6 +24,14 @@ class UrlShorter(APIView):
 
         short_url = url.short_url
         return Response(short_url)
+
+
+class ShortUrlView(APIView):
+    def get(self, request, hash):
+        url = Url.objects.get(hash_url=hash)
+        url = url.url
+
+        return HttpResponseRedirect(url)
 
 
 class UrlExport(APIView):
