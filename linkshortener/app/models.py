@@ -2,9 +2,7 @@ import uuid
 import base64
 from django.db import models
 from django.core.validators import URLValidator
-
-
-HOST_NAME = 'http://localhost:8000/'
+from linkshortener.settings import HOST_NAME
 
 
 class Url(models.Model):
