@@ -14,9 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from rest_framework.routers import DefaultRouter
-from app.views import UrlListViewSets
+from app.views import UrlListViewSets, UrlShorter
 
 
 router = DefaultRouter()
@@ -24,6 +24,7 @@ router.register('', UrlListViewSets)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    re_path(r'^shorter/(?P<origin_uri>.+)$', UrlShorter.as_view())
 ]
 
 urlpatterns += router.urls
